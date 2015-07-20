@@ -29,7 +29,7 @@ public class PublicipproviderServlet extends HttpServlet {
 			dataService.put(entity);
 			resp.getWriter().println("OK");
 		} else if (operation.equals("get")) {
-			// TODO get from DB
+			// get from DB
 			Key key = KeyFactory.createKey("ipKey", 1); 
 			DatastoreService dataService =  DatastoreServiceFactory.getDatastoreService();
 			try {
