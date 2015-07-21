@@ -1,21 +1,18 @@
 package com.dgbsoft.pip.provider.data;
 
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-@PersistenceCapable
+@Entity
 public class ServerIPData {
 
 	public final static String KEY_IP_DATA = "ipKey";
 	
-	@PrimaryKey
+	@Id
 	private String key = KEY_IP_DATA;
 
-	@Persistent
 	private String ip = null;
 	
-	@Persistent
 	private Long setTime = null;
 	
 	public ServerIPData(String ip, Long time) {
