@@ -7,11 +7,17 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.logging.Logger;
 
 public class IpSetter {
 
+	
+	public static void main(String [] args) {
+		setIP();
+	}
+	
 	public static void setIP() {
-		System.out.println("BEGIN at " + SimpleDateFormat.getDateTimeInstance().format(Calendar.getInstance()));
+		System.out.println("BEGIN at " + SimpleDateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
 		URL url;
 		InputStream in = null;
 		boolean repeat = true;
@@ -38,7 +44,7 @@ public class IpSetter {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("END at " + SimpleDateFormat.getDateTimeInstance().format(Calendar.getInstance()));
+		System.out.println("END at " + SimpleDateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
 	}
 
 }
