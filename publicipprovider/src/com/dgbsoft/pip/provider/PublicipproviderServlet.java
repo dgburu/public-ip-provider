@@ -3,9 +3,6 @@ package com.dgbsoft.pip.provider;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import javax.jdo.JDOHelper;
-import javax.jdo.JDOObjectNotFoundException;
-import javax.jdo.PersistenceManager;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -47,16 +44,6 @@ public class PublicipproviderServlet extends HttpServlet {
 			} finally {
 				em.close();
 			}
-			
-			/*
-			Key key = KeyFactory.createKey("ipKey", 1); 
-			Entity entity = new Entity(key);
-			entity.setProperty("ip", remoteAddress);
-			entity.setProperty("time", System.currentTimeMillis());
-			DatastoreService dataService =  DatastoreServiceFactory.getDatastoreService();
-			dataService.put(entity);
-			resp.getWriter().println("OK");
-			*/
 		} else if (operation.equals("get")) {
 			// get from DB
 			logger.info("get operation");
@@ -79,20 +66,6 @@ public class PublicipproviderServlet extends HttpServlet {
 			} finally {
 				em.close();
 			}
-			
-			/*
-			Key key = KeyFactory.createKey("ipKey", 1); 
-			DatastoreService dataService =  DatastoreServiceFactory.getDatastoreService();
-			try {
-				Entity entity = dataService.get(key);
-				String ip = (String) entity.getProperty("ip");
-				Long time = (Long) entity.getProperty("time");
-				resp.getWriter().println(ip + "\n" + time.toString());
-			} catch (EntityNotFoundException e) {
-				e.printStackTrace();
-				resp.getWriter().println("NOK");
-			}
-			*/
 		} else {
 			logger.warning("nop");
 			resp.getWriter().println("UNKNOWN OP");
