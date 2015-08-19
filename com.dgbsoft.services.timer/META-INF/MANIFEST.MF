@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Timer
+Bundle-SymbolicName: com.dgbsoft.services.timer
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: dgbusoft
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Require-Bundle: com.dgbsoft.core;bundle-version="1.0.0"
+Service-Component: OSGI-INF/timerComponent.xml

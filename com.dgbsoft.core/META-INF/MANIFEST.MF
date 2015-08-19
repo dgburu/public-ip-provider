@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Core
+Bundle-SymbolicName: com.dgbsoft.core
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: dgbsoft
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: com.dgbsoft.core.services
+Require-Bundle: org.eclipse.osgi;bundle-version="3.10.2"
+Bundle-ActivationPolicy: lazy
