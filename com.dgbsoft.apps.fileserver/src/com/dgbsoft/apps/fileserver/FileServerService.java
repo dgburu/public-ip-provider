@@ -28,6 +28,8 @@ public class FileServerService implements IFileServerService {
 	
 	@Override
 	public boolean start() {
+		getFileList(true);
+		
 		Properties config = new Properties();
 		try (FileInputStream configIS = new FileInputStream("fileserver.properties")) {
 			config.load(configIS);
@@ -78,9 +80,11 @@ public class FileServerService implements IFileServerService {
 
 	@Override
 	public InputStream getFile(String fileName) {
+		LOG.finer("Getting file = " + fileName);
 		Path path = filesDB.get(fileName);
 		if (path != null) {
 			try {
+				LOG.finest("File located at " + path.toString());
 				return Files.newInputStream(path);
 			} catch (IOException e) {
 				LOG.severe("Cannot get file " + fileName + ", msg =" + e);
@@ -93,6 +97,7 @@ public class FileServerService implements IFileServerService {
 
 	@Override
 	public Set<String> getFileList(boolean update) {
+		LOG.finer("Getting file list, update = " + update);
 		Properties config = new Properties();
 		try (FileInputStream configIS = new FileInputStream("fileserver.properties")) {
 			config.load(configIS);
@@ -102,6 +107,7 @@ public class FileServerService implements IFileServerService {
 		String pathsStr = config.getProperty("paths", "");
 		
 		if (update || filesDB.isEmpty()) {
+			LOG.finest("updating file list");
 			filesDB.clear();
 	
 			StringTokenizer st = new StringTokenizer(pathsStr, ";");
@@ -115,6 +121,7 @@ public class FileServerService implements IFileServerService {
 						for (File file : files) {
 							if (file.isFile()) {
 								filesDB.put(file.getName(), file.toPath());
+								LOG.finest("added file " + file.getName() + " at " + file.toPath().toString());
 							}
 						}
 					}
