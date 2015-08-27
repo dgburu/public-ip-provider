@@ -1,9 +1,9 @@
 package com.dgbsoft.apps.fileserver;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -24,6 +24,7 @@ public class FileServerService implements IFileServerService {
 
 	private Map<String,Path> filesDB = new HashMap<String, Path>();
 	private boolean serverRunning = false;
+	private Map<String, FileServerProcessor> processors = new HashMap<String, FileServerProcessor>();
 	
 	@Override
 	public boolean start() {
@@ -45,7 +46,16 @@ public class FileServerService implements IFileServerService {
 			serverRunning = true;
 			while (serverRunning) {
 				Socket socket = server.accept();
+				String remoteIp = socket.getInetAddress().getHostAddress();
 				
+				if (processors.containsKey(remoteIp)) {
+					LOG.warning("The remote ip " + remoteIp + " is already processing");
+				} else {
+					FileServerProcessor processor = new FileServerProcessor();
+					processor.setSocket(socket);
+					processor.setProcessors(processors);
+					(new Thread(processor)).start();
+				}
 			}
 			
 		} catch (IOException e) {
@@ -60,15 +70,18 @@ public class FileServerService implements IFileServerService {
 	@Override
 	public boolean stop() {
 		serverRunning = false;
+		for (FileServerProcessor processor : processors.values()) {
+			processor.stop();
+		}
 		return true;
 	}
 
 	@Override
-	public BufferedReader getFile(String fileName) {
+	public InputStream getFile(String fileName) {
 		Path path = filesDB.get(fileName);
 		if (path != null) {
 			try {
-				return Files.newBufferedReader(path);
+				return Files.newInputStream(path);
 			} catch (IOException e) {
 				LOG.severe("Cannot get file " + fileName + ", msg =" + e);
 			}

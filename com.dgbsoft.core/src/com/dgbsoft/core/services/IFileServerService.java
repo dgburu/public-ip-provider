@@ -1,6 +1,7 @@
 package com.dgbsoft.core.services;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.util.Set;
 
 public interface IFileServerService {
@@ -9,7 +10,7 @@ public interface IFileServerService {
 	
 	boolean stop();
 	
-	BufferedReader getFile(String fileName);
+	InputStream getFile(String fileName);
 	
 	Set<String> getFileList(boolean update);
 	
