@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 import com.dgbsoft.apps.fileserver.IAction;
 import com.dgbsoft.apps.fileserver.Protocol;
-import com.dgbsoft.core.services.IFileServerService;
+import com.dgbsoft.core.services.IFileProviderService;
 import com.dgbsoft.core.services.ServicesUtil;
 
 public class HttpProtocol extends Protocol {
@@ -34,7 +34,7 @@ public class HttpProtocol extends Protocol {
 			LOG.fine("Http request = " + line);
 			if (line.startsWith("GET") && line.endsWith("HTTP/1.1") && (line.charAt(4) == '/') && (line.length() >= 14)) {
 				String fileName = line.substring(4, line.length() - 9).trim();
-				IFileServerService service = ServicesUtil.getService(IFileServerService.class);
+				IFileProviderService service = ServicesUtil.getService(IFileProviderService.class);
 				if (service != null) {
 					InputStream fileToRead = service.getFile(fileName);
 					if (fileToRead != null) {

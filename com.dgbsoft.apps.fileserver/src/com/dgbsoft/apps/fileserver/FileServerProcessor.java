@@ -16,6 +16,7 @@ public class FileServerProcessor implements Runnable {
 	private boolean stopProcess = false;
 	private InputStream inputStream = null;
 	private OutputStream outputStream = null;
+	private IAction currentAction = null;
 	
 	@Override
 	public void run() {
@@ -39,9 +40,9 @@ public class FileServerProcessor implements Runnable {
 			if (outputStream != null && inputStream != null) {
 				while (!stopProcess) {
 					Protocol protocol = Protocol.getProtocol(socket.getInetAddress(), inputStream, outputStream);
-					IAction action = protocol.getAction();
-					if (action != null) {
-						stopProcess = action.perform();
+					currentAction = protocol.getAction();
+					if (currentAction != null) {
+						stopProcess = currentAction.perform();
 					} else {
 						stopProcess = true;
 					}
@@ -68,7 +69,10 @@ public class FileServerProcessor implements Runnable {
 	}
 
 	public void stop() {
-		stopProcess = true;		
+		stopProcess = true;
+		if (currentAction != null) {
+			currentAction.stop();
+		}
 	}
 
 }

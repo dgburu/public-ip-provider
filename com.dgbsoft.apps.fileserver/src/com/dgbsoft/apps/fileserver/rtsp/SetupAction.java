@@ -10,4 +10,10 @@ public class SetupAction implements IAction {
 		return false;
 	}
 
+	@Override
+	public void stop() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

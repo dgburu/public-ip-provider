@@ -19,7 +19,7 @@ public class IpSetter implements ITimerListener {
 
 	@Override
 	public int getPeriod() {
-		return 240_000;
+		return 240_000; //4 minutes
 	}
 
 	@Override

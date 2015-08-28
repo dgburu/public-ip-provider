@@ -1,10 +1,7 @@
-package com.dgbsoft.apps.fileserver;
+package com.dgbsoft.apps.fileprovider;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-
-import com.dgbsoft.core.services.IFileServerService;
-import com.dgbsoft.core.services.ServicesUtil;
 
 public class Activator implements BundleActivator {
 

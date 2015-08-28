@@ -16,6 +16,7 @@ public class GetFileAction implements IAction {
 
 	private HttpProtocol protocol = null;
 	private InputStream fileToSend = null;
+	private boolean stop = false;
 	
 	public GetFileAction(HttpProtocol protocol, InputStream fileToSend) {
 		this.protocol = protocol;
@@ -24,6 +25,7 @@ public class GetFileAction implements IAction {
 
 	@Override
 	public boolean perform() {
+		stop = false;
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(protocol.getOutputStream()));
 		try {
 			 String contentType = URLConnection.guessContentTypeFromStream(fileToSend);
@@ -41,10 +43,15 @@ public class GetFileAction implements IAction {
 
 	private void sendFile(InputStream file) throws IOException {
 		byte[] buffer = new byte[4096];
-		while (file.available()>0) {
+		while ((file.available() > 0) && !stop) {
 			protocol.getOutputStream().write(buffer, 0, file.read(buffer));
 			protocol.getOutputStream().flush();
 		}
+	}
+
+	@Override
+	public void stop() {
+		stop = true;		
 	}
 
 }
