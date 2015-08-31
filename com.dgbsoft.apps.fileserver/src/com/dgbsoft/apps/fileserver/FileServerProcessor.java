@@ -38,8 +38,8 @@ public class FileServerProcessor implements Runnable {
 			}
 
 			if (outputStream != null && inputStream != null) {
+				Protocol protocol = Protocol.getProtocol(socket.getInetAddress(), inputStream, outputStream);
 				while (!stopProcess) {
-					Protocol protocol = Protocol.getProtocol(socket.getInetAddress(), inputStream, outputStream);
 					currentAction = protocol.getAction();
 					if (currentAction != null) {
 						stopProcess = currentAction.perform();
