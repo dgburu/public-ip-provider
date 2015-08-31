@@ -1,12 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: File Server Service
-Bundle-SymbolicName: com.dgbsoft.apps.fileserver;singleton:=true
+Bundle-Name: File Server Starter
+Bundle-SymbolicName: com.dgbsoft.apps.fileserver.starter
 Bundle-Version: 1.0.0
-Bundle-Activator: com.dgbsoft.apps.fileserver.Activator
+Bundle-Activator: com.dgbsoft.apps.fileserver.starter.Activator
 Bundle-Vendor: DGBSOFT
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.osgi.framework;version="1.3.0"
 Bundle-ActivationPolicy: lazy
 Require-Bundle: com.dgbsoft.core;bundle-version="1.0.0"
-Service-Component: OSGI-INF/fileServerComponent.xml

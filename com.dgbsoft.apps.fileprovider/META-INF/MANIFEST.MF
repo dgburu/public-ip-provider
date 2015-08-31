@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: File Provider service
+Bundle-Name: File Provider Service
 Bundle-SymbolicName: com.dgbsoft.apps.fileprovider
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-Activator: com.dgbsoft.apps.fileprovider.Activator
 Bundle-Vendor: DGBSOFT
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
