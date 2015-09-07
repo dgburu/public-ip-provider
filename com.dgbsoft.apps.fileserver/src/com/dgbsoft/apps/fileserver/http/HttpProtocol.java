@@ -36,7 +36,7 @@ public class HttpProtocol extends Protocol {
 			line = reader.readLine();
 			LOG.fine("Http request = " + line);
 			if (line.startsWith("GET") && line.endsWith("HTTP/1.1") && (line.charAt(4) == '/') && (line.length() >= 14)) {
-				String fileName = line.substring(4, line.length() - 9).trim();
+				String fileName = line.substring(5, line.length() - 9).trim();
 				LOG.finest("GET file = " + fileName);
 				IFileProviderService service = ServicesUtil.getService(IFileProviderService.class);
 				if (service != null) {
