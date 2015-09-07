@@ -34,6 +34,7 @@ public class GetFileAction implements IAction {
 		    	 writer.append("Content-Type: " + contentType + "\r\n");
 		     }
 		     writer.append("Date: " + new Date() + "\r\n" + "Server: DgbSoft File server 1.0\r\n\r\n");
+		     writer.flush();
 		     sendFile(fileToSend); // send raw file 
 		} catch (IOException e) {
 			LOG.severe("Cannot send file, msg = " + e.getMessage());
