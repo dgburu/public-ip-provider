@@ -12,6 +12,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>Publicipprovider</servlet-name>
 		<url-pattern>/publicipprovider</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>FileServerWrapper</servlet-name>
+		<servlet-class>com.dgbsoft.pip.fswrapper.FileServerWrapperServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FileServerWrapper</servlet-name>
+		<url-pattern>/fileserverWrapper</url-pattern>
+	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

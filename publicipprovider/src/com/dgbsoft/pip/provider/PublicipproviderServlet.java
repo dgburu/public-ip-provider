@@ -1,8 +1,6 @@
 package com.dgbsoft.pip.provider;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
@@ -10,9 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.dgbsoft.pip.provider.data.BlockedIp;
 import com.dgbsoft.pip.provider.data.DataStoreFactoryService;
 import com.dgbsoft.pip.provider.data.ServerIPData;
+import com.dgbsoft.pip.provider.user.UserCheck;
 
 @SuppressWarnings("serial")
 public class PublicipproviderServlet extends HttpServlet {
@@ -22,63 +20,10 @@ public class PublicipproviderServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		logger.info("doGet");
 
-		EntityManager em = DataStoreFactoryService.get().createEntityManager();
-
-		String user = req.getParameter("usr");
-        String remoteAddress = req.getRemoteAddr();
-
-        if (user == null) {
-			try {
-				BlockedIp blockedIp = em.find(BlockedIp.class, remoteAddress);
-				if (blockedIp == null) {	
-					blockedIp = new BlockedIp(remoteAddress);
-					em.persist(blockedIp);
-				}
-				logger.info("nok, bocked ip " + remoteAddress);
-			} catch (Exception e) {
-				logger.info("nok");
-				logger.warning(e.toString());
-			}
-
-			resp.getWriter().println("NOK");
-            return;
-        } else {
-			try {
-				BlockedIp blockedIp = em.find(BlockedIp.class, remoteAddress);
-				if (blockedIp != null) {	
-					logger.info("nok, bocked ip " + remoteAddress);
-					resp.getWriter().println("NOK");
-					return;
-				}
-			} catch (Exception e) {
-				logger.info("nok, cannot check ip");
-				logger.warning(e.toString());
-				resp.getWriter().println("NOK");
-				return;
-			}
-
-			InputStream usersStream = this.getServletContext().getResourceAsStream("/WEB-INF/users.properties");
-        	Properties allowedUsers = new Properties();
-        	allowedUsers.load(usersStream);
-        	if (!allowedUsers.containsKey(user)) {
-    			try {
-    				BlockedIp blockedIp = em.find(BlockedIp.class, remoteAddress);
-    				if (blockedIp == null) {	
-    					blockedIp = new BlockedIp(remoteAddress);
-    					em.persist(blockedIp);
-    				}
-        			logger.warning("invalid user = " + user + ", rip = " + remoteAddress);
-    			} catch (Exception e) {
-    				logger.info("nok cannot check ip");
-    				logger.warning(e.toString());
-    			}
-
-    			resp.getWriter().println("NOK");
-    			return;
-        	} else {
-        		logger.info("logged user uid = " + user);
-        	}
-        }
+		if (!UserCheck.getInstance().checkUser(req, getServletContext())) {
+			resp.getWriter().append("NOK usr");
+			return;
+		}
 
 		String operation = req.getParameter("op");
 		if (operation == null) {
@@ -86,6 +31,10 @@ public class PublicipproviderServlet extends HttpServlet {
 			resp.getWriter().println("NOK");
 			return;
 		}
+
+		EntityManager em = DataStoreFactoryService.get().createEntityManager();
+		String remoteAddress = req.getRemoteAddr();
+		
 		if (operation.equals("set")) {
 			// store in DB
 			logger.info("set operation");

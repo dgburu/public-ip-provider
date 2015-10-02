@@ -13,10 +13,13 @@ import java.util.logging.Logger;
 
 import com.dgbsoft.apps.fileserver.IAction;
 import com.dgbsoft.apps.fileserver.Protocol;
+import com.dgbsoft.apps.fileserver.http.actions.GetFileAction;
+import com.dgbsoft.apps.fileserver.http.actions.GetFileListAction;
+import com.dgbsoft.apps.fileserver.http.actions.UpdateFileListAction;
 import com.dgbsoft.core.services.IFileProviderService;
 import com.dgbsoft.core.services.ServicesUtil;
 
-public class HttpProtocol extends Protocol {
+public class HttpProtocol extends Protocol implements IStreamProvider {
 
 	private final static Logger LOG = Logger.getLogger(HttpProtocol.class.getName());
 
@@ -38,44 +41,13 @@ public class HttpProtocol extends Protocol {
 			if (line.startsWith("GET") && line.endsWith("HTTP/1.1") && (line.charAt(4) == '/') && (line.length() >= 14)) {
 				String fileName = line.substring(5, line.length() - 9).trim();
 				LOG.finest("GET file = " + fileName);
-				IFileProviderService service = ServicesUtil.getService(IFileProviderService.class);
-				if (service != null) {
-					InputStream fileToRead = service.getFile(fileName);
-					if (fileToRead != null) {
-						return new GetFileAction(this, fileToRead);
-					} else {
-						LOG.severe("No available file = " + fileName);
-					}
-				} else {
-					LOG.severe("No file provider service available");
-				}
+				return new GetFileAction(this, fileName);
 			} else if (line.startsWith("GETFILELIST")) {
 				LOG.finest("GETFILELIST");
-				StringBuffer message = new StringBuffer();
-				IFileProviderService service = ServicesUtil.getService(IFileProviderService.class);
-				if (service != null) {
-					Set<String> fileList = service.getFileList(false);
-					for (String fileName : fileList) {
-						message.append(fileName + "\r\n");
-					}
-					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
-					writer.append(message);
-					LOG.finest(message.toString());
-					writer.flush();
-				} else {
-					LOG.severe("No file provider service available");
-				}
+				return new GetFileListAction(this);
 			} else if (line.startsWith("UPDATEFILELIST")) {
 				LOG.finest("UPDATEFILELIST");
-				IFileProviderService service = ServicesUtil.getService(IFileProviderService.class);
-				if (service != null) {
-					service.getFileList(true);
-					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
-					writer.append("OK\r\n");
-					writer.flush();
-				} else {
-					LOG.severe("No file provider service available");
-				}
+				return new UpdateFileListAction(this);
 			} else {
 				LOG.severe("Bad request");
 			}
@@ -85,11 +57,11 @@ public class HttpProtocol extends Protocol {
 		return null;
 	}
 	
-	protected InputStream getInputStream() {
+	public InputStream getInputStream() {
 		return inputStream;
 	}
 	
-	protected OutputStream getOutputStream() {
+	public OutputStream getOutputStream() {
 		return outputStream;
 	}
 
