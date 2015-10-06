@@ -31,7 +31,7 @@ public class IpSetter implements ITimerListener {
 			Properties config = new Properties();
 			config.load(new FileInputStream("ipsetterconfig.properties"));
 			LOG.fine("Connecting to " + config.getProperty("URL"));
-			url = new URL(config.getProperty("URL") + ";usr=" + config.getProperty("USER"));
+			url = new URL(config.getProperty("URL") + "&usr=" + config.getProperty("USER"));
 			config.clear();
 			in = url.openStream();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
