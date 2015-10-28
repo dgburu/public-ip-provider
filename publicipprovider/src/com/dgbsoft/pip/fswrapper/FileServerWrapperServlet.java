@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Properties;
+import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
@@ -17,6 +18,8 @@ import com.dgbsoft.pip.provider.data.ServerIPData;
 import com.dgbsoft.pip.provider.user.UserCheck;
 
 public class FileServerWrapperServlet extends HttpServlet {
+
+	private static final long serialVersionUID = 1L;
 
 	public static Logger logger = Logger.getLogger(FileServerWrapperServlet.class.getName());
 
@@ -38,8 +41,31 @@ public class FileServerWrapperServlet extends HttpServlet {
 		if (operation.equals("fl")) {
 			ServerConnection connection = connectToServer();
 			connection.write("GETFILELIST");
+
 			String message = connection.read();
-			resp.getWriter().append(message);
+
+			EntityManager em = DataStoreFactoryService.get().createEntityManager();
+			try {
+				ServerIPData data = em.find(ServerIPData.class, ServerIPData.KEY_IP_DATA);
+				if (data == null) {
+					resp.getWriter().append(message);
+					resp.getWriter().println("NOK");
+					logger.info("nok");
+				} else {
+					resp.getWriter().println("<html><body>");
+					StringTokenizer st = new StringTokenizer(message, "\n");
+					while (st.hasMoreTokens()) {
+						String line = st.nextToken();
+						resp.getWriter().println("<a href=\"http://" + data.getIp() + ":" +connection.getPort() + "/" + line + "\">" + line + "</a><br>");
+					}
+					resp.getWriter().println("</body></html>");
+				}
+			} catch (Exception e) {
+				logger.warning(e.toString());
+				resp.getWriter().println("NOK");
+			} finally {
+				em.close();
+			}
 		} else if (operation.equals("ufl")) {
 			ServerConnection connection = connectToServer();
 			connection.write("UPDATEFILELIST");
@@ -73,6 +99,7 @@ public class FileServerWrapperServlet extends HttpServlet {
 			socket = new Socket();
 			socket.connect(InetSocketAddress.createUnresolved(data.getIp(), port));
 			serverConnection = new ServerConnection(socket);
+			serverConnection.setPort(port);
 		} catch(Exception e) {
 			logger.severe("Problems getting socket input/output " + e.getMessage());
 			socket = null;

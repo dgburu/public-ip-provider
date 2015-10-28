@@ -14,10 +14,19 @@ public class ServerConnection {
 	private Socket socket = null;
 	private PrintWriter writer = null;
 	private BufferedReader reader = null;
+	private int port = 15551;
 	
 	public ServerConnection(Socket socket) {
 		this.socket = socket;
 		initialize();
+	}
+	
+	public void setPort(int port) {
+		this.port = port;
+	}
+
+	public int getPort() {
+		return port;
 	}
 	
 	public void write(String message) {
