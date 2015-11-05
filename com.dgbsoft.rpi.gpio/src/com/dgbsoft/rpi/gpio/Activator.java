@@ -3,6 +3,9 @@ package com.dgbsoft.rpi.gpio;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import com.dgbsoft.core.services.IRpiGpioService;
+import com.dgbsoft.core.services.ServicesUtil;
+
 public class Activator implements BundleActivator {
 
 	private static BundleContext context;
@@ -11,20 +14,16 @@ public class Activator implements BundleActivator {
 		return context;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
-	 */
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
-	 */
 	public void stop(BundleContext bundleContext) throws Exception {
 		Activator.context = null;
+		IRpiGpioService service = ServicesUtil.getService(IRpiGpioService.class);
+		if (service != null) {
+			service.shutdown();
+		}
 	}
 
 }

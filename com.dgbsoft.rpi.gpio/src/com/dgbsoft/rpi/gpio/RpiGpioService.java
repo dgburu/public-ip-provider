@@ -14,33 +14,43 @@ import com.pi4j.io.gpio.RaspiPin;
 public class RpiGpioService implements IRpiGpioService {
 
 	private final GpioController gpio;
-	private Map<Integer, GpioPinDigitalOutput> pins = null;
+	private Map<String, GpioPinDigitalOutput> pins = null;
 	
 	public RpiGpioService() {
 		gpio = GpioFactory.getInstance();
-		pins = new HashMap<Integer, GpioPinDigitalOutput>();
+		pins = new HashMap<String, GpioPinDigitalOutput>();
 	}
 	
 	@Override
-	public void pinToHigh(int pinNumber) {
-		
-        GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04,   // PIN NUMBER
-                "My LED",           // PIN FRIENDLY NAME (optional)
-                PinState.LOW);      // PIN STARTUP STATE (optional)
-		// END SNIPPET: usage-provision-output-pin-snippet
-		
-		// START SNIPPET: usage-shutdown-pin-snippet
-		// configure the pin shutdown behavior; these settings will be 
-		// automatically applied to the pin when the application is terminated
-		// ensure that the LED is turned OFF when the application is shutdown
-		pin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
-		
+	public void pinToHigh(String pinNumber) {
+		GpioPinDigitalOutput pin = pins.get(pinNumber);
+		if (pin == null) {
+	        pin = gpio.provisionDigitalOutputPin(RaspiPin.getPinByName(pinNumber),   // PIN NUMBER
+	                pinNumber,           // PIN FRIENDLY NAME (optional)
+	                PinState.LOW);      // PIN STARTUP STATE (optional)
+			pin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
+			pins.put(pinNumber, pin);
+		}
+		pin.high();
 	}
 
 	@Override
-	public void pinToLow(int pinNumber) {
-		// TODO Auto-generated method stub
-		
+	public void pinToLow(String pinNumber) {
+		GpioPinDigitalOutput pin = pins.get(pinNumber);
+		if (pin == null) {
+	        pin = gpio.provisionDigitalOutputPin(RaspiPin.getPinByName(pinNumber),   // PIN NUMBER
+	                pinNumber,           // PIN FRIENDLY NAME (optional)
+	                PinState.LOW);      // PIN STARTUP STATE (optional)
+			pin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
+			pins.put(pinNumber, pin);
+		}
+		pin.low();		
+	}
+	
+	@Override
+	public void shutdown() {
+		pins.clear();
+		gpio.shutdown();
 	}
 
 }
