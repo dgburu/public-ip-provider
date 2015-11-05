@@ -1,25 +1,24 @@
 package com.dgbsoft.apps.fileserver.http;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.InetAddress;
-import java.util.Set;
 import java.util.logging.Logger;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
+import org.osgi.framework.FrameworkUtil;
+
+import com.dgbsoft.apps.fileserver.Activator;
 import com.dgbsoft.apps.fileserver.IAction;
 import com.dgbsoft.apps.fileserver.Protocol;
 import com.dgbsoft.apps.fileserver.http.actions.DisableFanAction;
 import com.dgbsoft.apps.fileserver.http.actions.EnableFanAction;
-import com.dgbsoft.apps.fileserver.http.actions.GetFileAction;
 import com.dgbsoft.apps.fileserver.http.actions.GetFileListAction;
 import com.dgbsoft.apps.fileserver.http.actions.UpdateFileListAction;
-import com.dgbsoft.core.services.IFileProviderService;
-import com.dgbsoft.core.services.ServicesUtil;
 
 public class HttpProtocol extends Protocol implements IStreamProvider {
 
@@ -55,10 +54,30 @@ public class HttpProtocol extends Protocol implements IStreamProvider {
 					return new UpdateFileListAction(this);
 				} else if (line.contains("ENABLEFAN")) {
 					LOG.finest("ENABLEFAN");
-					return new EnableFanAction();
+					return new EnableFanAction(this);
 				} else if (line.contains("DISABLEFAN")) {
 					LOG.finest("DISABLEFAN");
-					return new DisableFanAction();
+					return new DisableFanAction(this);
+				} else if (line.contains("SHUTDOWNALL")) {
+					LOG.finest("SHUTDOWNALL");
+					if (FrameworkUtil.getBundle(Activator.class) != null) {
+						BundleContext context = FrameworkUtil.getBundle(Activator.class).getBundleContext();
+						if (context != null) {
+							if (context.getBundle(0) != null) {
+								try {
+									context.getBundle(0).stop();
+								} catch (BundleException e) {
+									LOG.severe("Error stoping bundle 0" + e.getMessage());
+								}
+							} else {
+								LOG.severe("No bundle 0");
+							}
+						} else {
+							LOG.severe("No context");
+						}
+					} else {
+						LOG.severe("No activator bundle");
+					}
 				} else {
 					LOG.severe("Bad request");
 				}
