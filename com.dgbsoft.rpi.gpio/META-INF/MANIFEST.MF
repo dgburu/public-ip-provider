@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Gpio
+Bundle-SymbolicName: com.dgbsoft.rpi.gpio
+Bundle-Version: 1.0.0
+Bundle-Activator: com.dgbsoft.rpi.gpio.Activator
+Bundle-Vendor: DGBSOFT
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: org.osgi.framework;version="1.3.0"
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: lib/pi4j-core.jar,
+ lib/pi4j-device.jar,
+ lib/pi4j-gpio-extension.jar,
+ lib/pi4j-service.jar,
+ .
+Service-Component: OSGI-INF/rpigpioComponent.xml
+Require-Bundle: com.dgbsoft.core

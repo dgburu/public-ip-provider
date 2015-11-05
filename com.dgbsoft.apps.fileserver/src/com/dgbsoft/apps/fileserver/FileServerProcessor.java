@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.Map;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class FileServerProcessor implements Runnable {
@@ -12,7 +12,7 @@ public class FileServerProcessor implements Runnable {
 	private final static Logger LOG = Logger.getLogger(FileServerProcessor.class.getName());
 
 	private Socket socket = null;
-	private Map<String, FileServerProcessor> processors = null;
+	private List<FileServerProcessor> processors = null;
 	private boolean stopProcess = false;
 	private InputStream inputStream = null;
 	private OutputStream outputStream = null;
@@ -22,7 +22,7 @@ public class FileServerProcessor implements Runnable {
 	public void run() {
 		if (socket != null) {
 			String remoteIp = socket.getInetAddress().getHostAddress();
-			processors.put(remoteIp, this);
+			processors.add(this);
 			LOG.fine("Processing orders from remote ip " + remoteIp);
 			
 			try {
@@ -64,7 +64,7 @@ public class FileServerProcessor implements Runnable {
 		this.socket = socket;		
 	}
 
-	public void setProcessors(Map<String, FileServerProcessor> processors) {
+	public void setProcessors(List<FileServerProcessor> processors) {
 		this.processors = processors;
 	}
 

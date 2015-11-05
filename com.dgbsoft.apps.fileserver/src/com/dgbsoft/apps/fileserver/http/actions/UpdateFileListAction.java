@@ -3,6 +3,7 @@ package com.dgbsoft.apps.fileserver.http.actions;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.Date;
 import java.util.logging.Logger;
 
 import com.dgbsoft.apps.fileserver.http.IStreamProvider;
@@ -24,6 +25,9 @@ public class UpdateFileListAction extends BaseAction {
 			service.getFileList(true);
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
 			try {
+			    writer.append("HTTP/1.0 200 OK\r\n");
+		    	writer.append("Content-Type: text/plain\r\n");
+			    writer.append("Date: " + new Date() + "\r\n" + "Server: DgbSoft File server 1.0\r\n\r\n");
 				writer.append("OK\r\n");
 				writer.flush();
 			} catch (IOException e) {

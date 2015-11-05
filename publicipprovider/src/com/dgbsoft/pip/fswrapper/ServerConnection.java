@@ -4,20 +4,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
+import java.net.URLConnection;
 import java.util.logging.Logger;
 
 public class ServerConnection {
 
 	public static Logger logger = Logger.getLogger(ServerConnection.class.getName());
 
-	private Socket socket = null;
+	private URLConnection con = null;
 	private PrintWriter writer = null;
 	private BufferedReader reader = null;
 	private int port = 15551;
 	
-	public ServerConnection(Socket socket) {
-		this.socket = socket;
+	public ServerConnection(URLConnection con) {
+		this.con = con;
 		initialize();
 	}
 	
@@ -52,23 +52,36 @@ public class ServerConnection {
 	}
 	
 	public void initialize() {
-		if (socket != null) {
+		if (con != null) {
 			try {
-				writer = new PrintWriter(socket.getOutputStream());
-				reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				writer = new PrintWriter(con.getOutputStream());
+				logger.info("output stream created successfully");
 			} catch (IOException e) {
 				logger.severe("error getting outputstream " + e.getMessage());
+				FileServerWrapperServlet.logStackTrace(e);
 			}
-		} 
+			try {
+				reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+				logger.info("input streams created successfully");
+			} catch (IOException e) {
+				logger.severe("error getting inputstream " + e.getMessage());
+				FileServerWrapperServlet.logStackTrace(e);
+			}
+		} else {
+			logger.severe("connection is null");
+		}
 	}
 	
 	public void close() {
-		try {
-			if (socket != null) {
-				socket.close();
+		if (writer != null) {
+			writer.close();
+		}
+		if (reader != null) {
+			try {
+				reader.close();
+			} catch (IOException e) {
+				logger.severe("cannot close output stream");
 			}
-		} catch (IOException e) {
-			logger.severe("error closing socket " + e.getMessage());
 		}
 	}
 }

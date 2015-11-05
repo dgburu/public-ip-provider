@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 
 import com.dgbsoft.core.services.IFileProviderService;
@@ -58,24 +59,31 @@ public class FileProviderService implements IFileProviderService {
 			while (st.hasMoreTokens()) {
 				String pathStr = st.nextToken();
 				Path path = Paths.get(pathStr);
-				if (Files.exists(path) && Files.isDirectory(path)) {
-					File folder = path.toFile();
-					File [] files = folder.listFiles();
-					if (files != null) {
-						for (File file : files) {
-							if (file.isFile()) {
-								filesDB.put(file.getName(), file.toPath());
-								LOG.finest("added file " + file.getName() + " at " + file.toPath().toString());
-							}
-						}
+				getFiles(path, path);
+			}
+		}
+		Map<String,Path> ordered = new TreeMap<String,Path>(filesDB);
+		return ordered.keySet();
+	}
+
+	private void getFiles(Path path, Path basePath) {
+		if (Files.exists(path) && Files.isDirectory(path)) {
+			File folder = path.toFile();
+			File [] files = folder.listFiles();
+			if (files != null) {
+				for (File file : files) {
+					if (file.isFile()) {
+						Path relativePath = basePath.relativize(file.toPath());
+						filesDB.put(relativePath.toString(), file.toPath());
+						LOG.finest("added file " + relativePath.toString() + " at " + file.toPath().toString());
+					} else if (file.isDirectory()) {
+						getFiles(file.toPath(), basePath);
 					}
 				}
 			}
 		}
-		
-		return filesDB.keySet();
 	}
-
+	
 	@Override
 	public Path getFilePath(String fileName) {
 		return filesDB.get(fileName);

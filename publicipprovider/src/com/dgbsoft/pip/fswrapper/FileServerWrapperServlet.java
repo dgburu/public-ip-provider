@@ -3,7 +3,8 @@ package com.dgbsoft.pip.fswrapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
-import java.net.Socket;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
@@ -39,11 +40,18 @@ public class FileServerWrapperServlet extends HttpServlet {
 		}
 
 		if (operation.equals("fl")) {
-			ServerConnection connection = connectToServer();
-			connection.write("GETFILELIST");
+			ServerConnection connection = connectToServer("GETFILELIST");
+			if (connection == null) {
+				resp.getWriter().println("NOK");
+				logger.info("nok");
+		        logger.info("exit doGet");
+				return;
+			}
 
 			String message = connection.read();
 
+			connection.close();
+			
 			EntityManager em = DataStoreFactoryService.get().createEntityManager();
 			try {
 				ServerIPData data = em.find(ServerIPData.class, ServerIPData.KEY_IP_DATA);
@@ -51,13 +59,21 @@ public class FileServerWrapperServlet extends HttpServlet {
 					resp.getWriter().append(message);
 					resp.getWriter().println("NOK");
 					logger.info("nok");
+			        logger.info("exit doGet");
+					return;
 				} else {
-					resp.getWriter().println("<html><body>");
-					StringTokenizer st = new StringTokenizer(message, "\n");
+					resp.getWriter().println("<html><body>\n");
+					StringTokenizer st = new StringTokenizer(message, ";");
+					resp.getWriter().println("<ul>");
 					while (st.hasMoreTokens()) {
 						String line = st.nextToken();
-						resp.getWriter().println("<a href=\"http://" + data.getIp() + ":" +connection.getPort() + "/" + line + "\">" + line + "</a><br>");
+						String name = line;
+						if (line.lastIndexOf('/') != -1) {
+							name = name.substring(line.lastIndexOf('/'));
+						}
+						resp.getWriter().println("<li><a href=\"ftp://" + data.getIp() + "/" + line + "\">" + name + "</a></li>\n");
 					}
+					resp.getWriter().println("</ul>");
 					resp.getWriter().println("</body></html>");
 				}
 			} catch (Exception e) {
@@ -67,9 +83,9 @@ public class FileServerWrapperServlet extends HttpServlet {
 				em.close();
 			}
 		} else if (operation.equals("ufl")) {
-			ServerConnection connection = connectToServer();
-			connection.write("UPDATEFILELIST");
+			ServerConnection connection = connectToServer("UPDATEFILELIST");
 			String message = connection.read();
+			connection.close();
 			resp.getWriter().append(message);
 		} else {
 			logger.warning("nop");
@@ -79,7 +95,7 @@ public class FileServerWrapperServlet extends HttpServlet {
         logger.info("exit doGet");
 	}
 	
-	private ServerConnection connectToServer() {
+	private ServerConnection connectToServer(String requestData) {
 		InputStream serverStream = getServletContext().getResourceAsStream("/WEB-INF/server.properties");
     	Properties serverProps = new Properties();
     	int port = 15551;
@@ -92,21 +108,35 @@ public class FileServerWrapperServlet extends HttpServlet {
 		EntityManager em = DataStoreFactoryService.get().createEntityManager();
 		
 		ServerIPData data = null;
-		Socket socket = null;
 		ServerConnection serverConnection = null;
 		try {
 			data = em.find(ServerIPData.class, ServerIPData.KEY_IP_DATA);
-			socket = new Socket();
-			socket.connect(InetSocketAddress.createUnresolved(data.getIp(), port));
-			serverConnection = new ServerConnection(socket);
+			InetSocketAddress address = InetSocketAddress.createUnresolved(data.getIp(), port);
+			
+			logger.info("connecting to address = " + address.toString());
+			URL url = new URL("http://" + address.toString() + "/" + requestData);
+			URLConnection connection = url.openConnection();
+			connection.setDoInput(true);
+			connection.setDoOutput(true);
+			connection.connect();
+			serverConnection = new ServerConnection(connection);
 			serverConnection.setPort(port);
 		} catch(Exception e) {
 			logger.severe("Problems getting socket input/output " + e.getMessage());
-			socket = null;
+			logStackTrace(e);
 			serverConnection = null;
 		} finally {
 			em.close();
 		}
 		return serverConnection;
+	}
+	
+	public static void logStackTrace(Throwable e) {
+		String stackTrace = "";
+		StackTraceElement[] traces = e.getStackTrace();
+		for (StackTraceElement ele : traces) {
+			stackTrace += ele.getClassName() + "." + ele.getMethodName() + ":" + ele.getLineNumber() + "\n";
+		}
+		logger.severe(stackTrace);
 	}
 }

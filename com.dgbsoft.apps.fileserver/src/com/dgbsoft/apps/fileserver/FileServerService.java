@@ -4,8 +4,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -16,7 +16,7 @@ public class FileServerService implements IFileServerService {
 	private final static Logger LOG = Logger.getLogger(FileServerService.class.getName());
 
 	private boolean serverRunning = false;
-	private Map<String, FileServerProcessor> processors = new HashMap<String, FileServerProcessor>();
+	private List<FileServerProcessor> processors = new ArrayList<FileServerProcessor>();
 	
 	@Override
 	public boolean start() {
@@ -40,16 +40,12 @@ public class FileServerService implements IFileServerService {
 			serverRunning = true;
 			while (serverRunning) {
 				Socket socket = server.accept();
-				String remoteIp = socket.getInetAddress().getHostAddress();
+				//String remoteIp = socket.getInetAddress().getHostAddress();
 				
-				if (processors.containsKey(remoteIp)) {
-					LOG.warning("The remote ip " + remoteIp + " is already processing");
-				} else {
-					FileServerProcessor processor = new FileServerProcessor();
-					processor.setSocket(socket);
-					processor.setProcessors(processors);
-					(new Thread(processor)).start();
-				}
+				FileServerProcessor processor = new FileServerProcessor();
+				processor.setSocket(socket);
+				processor.setProcessors(processors);
+				(new Thread(processor)).start();
 			}
 			
 		} catch (IOException e) {
@@ -65,7 +61,7 @@ public class FileServerService implements IFileServerService {
 	public boolean stop() {
 		LOG.info("Stopping File server");
 		serverRunning = false;
-		for (FileServerProcessor processor : processors.values()) {
+		for (FileServerProcessor processor : processors) {
 			processor.stop();
 		}
 		return true;

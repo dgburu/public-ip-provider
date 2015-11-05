@@ -38,18 +38,22 @@ public class HttpProtocol extends Protocol implements IStreamProvider {
 		try {
 			line = reader.readLine();
 			LOG.fine("Http request = " + line);
-			if (line.startsWith("GET") && line.endsWith("HTTP/1.1") && (line.charAt(4) == '/') && (line.length() >= 14)) {
-				String fileName = line.substring(5, line.length() - 9).trim();
-				LOG.finest("GET file = " + fileName);
-				return new GetFileAction(this, fileName);
-			} else if (line.startsWith("GETFILELIST")) {
-				LOG.finest("GETFILELIST");
-				return new GetFileListAction(this);
-			} else if (line.startsWith("UPDATEFILELIST")) {
-				LOG.finest("UPDATEFILELIST");
-				return new UpdateFileListAction(this);
-			} else {
-				LOG.severe("Bad request");
+			if (line != null) {
+				/*
+				if (line.startsWith("GET") && line.endsWith("HTTP/1.1") && (line.charAt(4) == '/') && (line.length() >= 14)) {
+					String fileName = line.substring(5, line.length() - 9).trim();
+					LOG.finest("GET file = " + fileName);
+					return new GetFileAction(this, fileName);
+				} else */
+				if (line.contains("GETFILELIST")) {
+					LOG.finest("GETFILELIST");
+					return new GetFileListAction(this);
+				} else if (line.contains("UPDATEFILELIST")) {
+					LOG.finest("UPDATEFILELIST");
+					return new UpdateFileListAction(this);
+				} else {
+					LOG.severe("Bad request");
+				}
 			}
 		} catch (IOException e) {
 			LOG.severe("Cannot get line, msg = " + e.getMessage());
