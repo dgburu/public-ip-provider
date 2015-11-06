@@ -49,7 +49,7 @@ public class FileServerProcessor implements Runnable {
 				}
 			}
 			
-			processors.remove(remoteIp);
+			processors.remove(this);
 			processors = null;
 			try {
 				socket.close();

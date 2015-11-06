@@ -15,8 +15,6 @@ import org.osgi.framework.FrameworkUtil;
 import com.dgbsoft.apps.fileserver.Activator;
 import com.dgbsoft.apps.fileserver.IAction;
 import com.dgbsoft.apps.fileserver.Protocol;
-import com.dgbsoft.apps.fileserver.http.actions.DisableFanAction;
-import com.dgbsoft.apps.fileserver.http.actions.EnableFanAction;
 import com.dgbsoft.apps.fileserver.http.actions.GetFileListAction;
 import com.dgbsoft.apps.fileserver.http.actions.UpdateFileListAction;
 
@@ -52,12 +50,14 @@ public class HttpProtocol extends Protocol implements IStreamProvider {
 				} else if (line.contains("UPDATEFILELIST")) {
 					LOG.finest("UPDATEFILELIST");
 					return new UpdateFileListAction(this);
+				/*
 				} else if (line.contains("ENABLEFAN")) {
 					LOG.finest("ENABLEFAN");
 					return new EnableFanAction(this);
 				} else if (line.contains("DISABLEFAN")) {
 					LOG.finest("DISABLEFAN");
 					return new DisableFanAction(this);
+				*/
 				} else if (line.contains("SHUTDOWNALL")) {
 					LOG.finest("SHUTDOWNALL");
 					if (FrameworkUtil.getBundle(Activator.class) != null) {
