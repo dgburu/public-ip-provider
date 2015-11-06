@@ -87,13 +87,17 @@ public class FileServerWrapperServlet extends HttpServlet {
 			String message = connection.read();
 			connection.close();
 			resp.getWriter().append(message);
-		} else if (operation.equals("ef")) {
-			ServerConnection connection = connectToServer("ENABLEFAN");
+		} else if (operation.equals("sda")) {
+			ServerConnection connection = connectToServer("SHUTDOWNALL");
+			connection.close();
+			resp.getWriter().append("OK");
+		} else if (operation.equals("df")) {
+			ServerConnection connection = connectToServer("DISABLEFAN");
 			String message = connection.read();
 			connection.close();
 			resp.getWriter().append(message);
-		} else if (operation.equals("df")) {
-			ServerConnection connection = connectToServer("DISABLEFAN");
+		} else if (operation.equals("ef")) {
+			ServerConnection connection = connectToServer("ENABLEFAN");
 			String message = connection.read();
 			connection.close();
 			resp.getWriter().append(message);
