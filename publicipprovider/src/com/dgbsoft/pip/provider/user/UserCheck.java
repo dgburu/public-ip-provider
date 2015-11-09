@@ -78,7 +78,9 @@ public class UserCheck {
 
     			return false;
         	} else {
-        		logger.info("logged user uid = " + user);
+        		logger.info("logged user = " + user);
+        		String type = allowedUsers.getProperty(user);
+        		req.getSession().setAttribute("login", type);
         		return true;
         	}
         }

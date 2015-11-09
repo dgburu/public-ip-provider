@@ -10,13 +10,14 @@ import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.dgbsoft.pip.provider.data.DataStoreFactoryService;
 import com.dgbsoft.pip.provider.data.ServerIPData;
-import com.dgbsoft.pip.provider.user.UserCheck;
 
 public class FileServerWrapperServlet extends HttpServlet {
 
@@ -24,11 +25,14 @@ public class FileServerWrapperServlet extends HttpServlet {
 
 	public static Logger logger = Logger.getLogger(FileServerWrapperServlet.class.getName());
 
-	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		logger.info("doGet");
 
-		if (!UserCheck.getInstance().checkUser(req, getServletContext())) {
-			resp.getWriter().append("NOK usr");
+		if (req.getSession().getAttribute("login") == null) {
+	        logger.info("No session usr");
+	        RequestDispatcher rs = req.getRequestDispatcher("/index.html");
+	        rs.include(req, resp);
+	        logger.info("exit doGet");
 			return;
 		}
 		
@@ -36,6 +40,7 @@ public class FileServerWrapperServlet extends HttpServlet {
 		if (operation == null) {
 			logger.warning("no operation");
 			resp.getWriter().println("NOK");
+	        logger.info("exit doGet");
 			return;
 		}
 

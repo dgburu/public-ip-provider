@@ -4,6 +4,9 @@ xmlns="http://java.sun.com/xml/ns/javaee"
 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
 	<servlet>
 		<servlet-name>Publicipprovider</servlet-name>
 		<servlet-class>com.dgbsoft.pip.provider.PublicipproviderServlet</servlet-class>
@@ -19,6 +22,22 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>FileServerWrapper</servlet-name>
 		<url-pattern>/fileserverWrapper</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>Login</servlet-name>
+		<servlet-class>com.dgbsoft.pip.login.LoginServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Login</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>Initial</servlet-name>
+		<servlet-class>com.dgbsoft.pip.login.InitialServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Initial</servlet-name>
+		<url-pattern>/initial</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

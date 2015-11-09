@@ -15,16 +15,10 @@
   <body>
     <h1>Hello App Engine!</h1>
 	
-    <table>
-      <tr>
-        <td colspan="2" style="font-weight:bold;">Available Servlets:</td>        
-      </tr>
-      <tr>
-        <td><a href="publicipprovider?op=set">Set Publicipprovider</a></td>
-      </tr>
-      <tr>
-        <td><a href="publicipprovider?op=get">Get Publicipprovider</a></td>
-      </tr>
-    </table>
+    <form method="post" action="login">
+    	<b>User : </b><input name="usr"/><br/>
+    	<input type="submit" value="Login"/>
+    </form>
+    
   </body>
 </html>

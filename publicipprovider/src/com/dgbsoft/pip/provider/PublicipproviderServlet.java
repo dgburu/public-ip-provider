@@ -1,9 +1,13 @@
 package com.dgbsoft.pip.provider;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,11 +21,23 @@ public class PublicipproviderServlet extends HttpServlet {
 	
 	public static Logger logger = Logger.getLogger(PublicipproviderServlet.class.getName());
 
-	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		logger.info("doGet");
 
-		if (!UserCheck.getInstance().checkUser(req, getServletContext())) {
-			resp.getWriter().append("NOK usr");
+		if (req.getSession().getAttribute("login") != null) {
+	        logger.info("session usr");
+			if (!req.getSession().getAttribute("login").equals("admin")) {
+		        logger.info("no admin usr");
+		        RequestDispatcher rs = req.getRequestDispatcher("/index.html");
+		        rs.include(req, resp);
+		        logger.info("exit doGet");
+		        return;
+			}
+		} else if (!UserCheck.getInstance().checkUser(req, getServletContext())) {
+	        logger.info("no usr");
+	        RequestDispatcher rs = req.getRequestDispatcher("/index.html");
+	        rs.include(req, resp);
+	        logger.info("exit doGet");
 			return;
 		}
 
@@ -70,7 +86,10 @@ public class PublicipproviderServlet extends HttpServlet {
 					resp.getWriter().println("NOK");
 					logger.info("nok");
 				} else {
-					resp.getWriter().println(data.getIp() + "\n" + data.getTime());
+					SimpleDateFormat df = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTimeInMillis(data.getTime());
+					resp.getWriter().println(data.getIp() + "\n" + df.format(calendar.getTime()));
 					logger.info("ok");
 				}
 			} catch (Exception e) {
