@@ -69,16 +69,13 @@ public class FileServerWrapperServlet extends HttpServlet {
 				} else {
 					resp.getWriter().println("<html><body>\n");
 					StringTokenizer st = new StringTokenizer(message, ";");
-					resp.getWriter().println("<ul>");
+					resp.getWriter().println("<ol>");
 					while (st.hasMoreTokens()) {
 						String line = st.nextToken();
 						String name = line;
-						if (line.lastIndexOf('/') != -1) {
-							name = name.substring(line.lastIndexOf('/'));
-						}
 						resp.getWriter().println("<li><a href=\"ftp://" + data.getIp() + "/" + line + "\">" + name + "</a></li>\n");
 					}
-					resp.getWriter().println("</ul>");
+					resp.getWriter().println("</ol>");
 					resp.getWriter().println("</body></html>");
 				}
 			} catch (Exception e) {
@@ -103,6 +100,21 @@ public class FileServerWrapperServlet extends HttpServlet {
 			resp.getWriter().append(message);
 		} else if (operation.equals("ef")) {
 			ServerConnection connection = connectToServer("ENABLEFAN");
+			String message = connection.read();
+			connection.close();
+			resp.getWriter().append(message);
+		} else if (operation.equals("as")) {
+			ServerConnection connection = connectToServer("STARTAMULE");
+			String message = connection.read();
+			connection.close();
+			resp.getWriter().append(message);
+		} else if (operation.equals("ap")) {
+			ServerConnection connection = connectToServer("STOPAMULE");
+			String message = connection.read();
+			connection.close();
+			resp.getWriter().append(message);
+		} else if (operation.equals("tp")) {
+			ServerConnection connection = connectToServer("GETTEMPERATURE");
 			String message = connection.read();
 			connection.close();
 			resp.getWriter().append(message);

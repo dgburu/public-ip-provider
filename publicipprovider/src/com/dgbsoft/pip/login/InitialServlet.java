@@ -24,16 +24,30 @@ public class InitialServlet extends HttpServlet {
 			rs.include(req, resp);
 		} else if (req.getSession().getAttribute("login").equals("admin")) {
 			resp.getWriter().append("<html><body>");
+			resp.getWriter().append("<dl>");
+			resp.getWriter().append("<dt><b>IP</b></dt>");
 			resp.getWriter().append("<ul>");
-			resp.getWriter().append("<li><a href=\"/publicipprovider?op=get\">Get Public IP</a></li>");
-			resp.getWriter().append("<li><a href=\"/publicipprovider?op=set\">Set public IP</a></li>");
-			resp.getWriter().append("<li><a href=\"/fileserverWrapper?op=fl\">See Film List</a></li>");
+			resp.getWriter().append("<li type=\"disc\"><a href=\"/publicipprovider?op=get\">Get Public IP</a></li>");
+			resp.getWriter().append("<li type=\"disc\"><a href=\"/publicipprovider?op=set\">Set public IP</a></li>");
+			resp.getWriter().append("</ul>");
+			resp.getWriter().append("<dt><b>Download</b></dt>");
+			resp.getWriter().append("<ul>");
+			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=as\">Start Downloads</a></li>");
+			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=ap\">Stop Downloads</a></li>");
+			resp.getWriter().append("</ul>");
+			resp.getWriter().append("<dt><b>Hardware</b></dt>");
+			resp.getWriter().append("<ul>");
+			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=tp\">Get Temperature</a></li>");
+			resp.getWriter().append("</ul>");
+			resp.getWriter().append("<dt><b>Film</b></dt>");
+			resp.getWriter().append("<ul>");
+			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=fl\">See Film List</a></li>");
 			resp.getWriter().append("</ul>");
 			resp.getWriter().append("</body></html>");
 		} else if (req.getSession().getAttribute("login").equals("user")) {
 			resp.getWriter().append("<html><body>");
 			resp.getWriter().append("<ul>");
-			resp.getWriter().append("<li><a href=\"/fileserverWrapper?op=fl\">See Film List</a></li>");
+			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=fl\">See Film List</a></li>");
 			resp.getWriter().append("</ul>");
 			resp.getWriter().append("</body></html>");
 		}
