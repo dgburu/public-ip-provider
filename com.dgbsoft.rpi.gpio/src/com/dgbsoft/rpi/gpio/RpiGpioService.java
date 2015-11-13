@@ -11,6 +11,7 @@ import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinPullResistance;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
+import con.pi4j.system;
 
 public class RpiGpioService implements IRpiGpioService {
 
@@ -62,6 +63,10 @@ public class RpiGpioService implements IRpiGpioService {
 		pins.clear();
 		gpio.shutdown();
 		LOG.finest("end shutting");
-	}
+        }
 
+        @Override
+        public float getTemperature() {
+                return SystemInfo.getCpuTemperature();
+        }
 }
