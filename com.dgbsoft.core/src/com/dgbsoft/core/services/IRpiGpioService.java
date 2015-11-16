@@ -32,5 +32,5 @@ public interface IRpiGpioService {
 	public void pinToHigh(String pinNumber);
 	public void pinToLow(String pinNumber);
 	public void shutdown();
-        public float getTempetature();
+    public float getTemperature();
 }

@@ -1,5 +1,6 @@
 package com.dgbsoft.rpi.gpio;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -11,7 +12,7 @@ import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinPullResistance;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
-import con.pi4j.system;
+import com.pi4j.system.SystemInfo;
 
 public class RpiGpioService implements IRpiGpioService {
 
@@ -63,10 +64,16 @@ public class RpiGpioService implements IRpiGpioService {
 		pins.clear();
 		gpio.shutdown();
 		LOG.finest("end shutting");
-        }
+    }
 
-        @Override
-        public float getTemperature() {
-                return SystemInfo.getCpuTemperature();
-        }
+    @Override
+    public float getTemperature() {
+    	try {
+			return SystemInfo.getCpuTemperature();
+		} catch (NumberFormatException | IOException | InterruptedException e) {
+			LOG.severe("Cannot retrieve cpu temperature");
+		}
+    	return -1;
+    }
+    
 }

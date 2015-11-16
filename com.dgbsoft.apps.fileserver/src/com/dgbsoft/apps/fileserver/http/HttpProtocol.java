@@ -16,6 +16,9 @@ import com.dgbsoft.apps.fileserver.Activator;
 import com.dgbsoft.apps.fileserver.IAction;
 import com.dgbsoft.apps.fileserver.Protocol;
 import com.dgbsoft.apps.fileserver.http.actions.GetFileListAction;
+import com.dgbsoft.apps.fileserver.http.actions.GetTemperatureAction;
+import com.dgbsoft.apps.fileserver.http.actions.StartMuleAction;
+import com.dgbsoft.apps.fileserver.http.actions.StopMuleAction;
 import com.dgbsoft.apps.fileserver.http.actions.UpdateFileListAction;
 
 public class HttpProtocol extends Protocol implements IStreamProvider {
@@ -50,6 +53,15 @@ public class HttpProtocol extends Protocol implements IStreamProvider {
 				} else if (line.contains("UPDATEFILELIST")) {
 					LOG.finest("UPDATEFILELIST");
 					return new UpdateFileListAction(this);
+				} else if (line.contains("GETTEMPERATURE")) {
+					LOG.finest("GETTEMPERATURE");
+					return new GetTemperatureAction(this);
+				} else if (line.contains("STARTAMULE")) {
+					LOG.finest("STARTAMULE");
+					return new StartMuleAction(this);
+				} else if (line.contains("STOPAMULE")) {
+					LOG.finest("STOPAMULE");
+					return new StopMuleAction(this);
 				/*
 				} else if (line.contains("ENABLEFAN")) {
 					LOG.finest("ENABLEFAN");

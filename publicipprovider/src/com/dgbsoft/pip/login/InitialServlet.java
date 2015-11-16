@@ -35,9 +35,10 @@ public class InitialServlet extends HttpServlet {
 			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=as\">Start Downloads</a></li>");
 			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=ap\">Stop Downloads</a></li>");
 			resp.getWriter().append("</ul>");
-			resp.getWriter().append("<dt><b>Hardware</b></dt>");
+			resp.getWriter().append("<dt><b>System</b></dt>");
 			resp.getWriter().append("<ul>");
 			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=tp\">Get Temperature</a></li>");
+			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=sda\">Stop FileServer</a></li>");
 			resp.getWriter().append("</ul>");
 			resp.getWriter().append("<dt><b>Film</b></dt>");
 			resp.getWriter().append("<ul>");
