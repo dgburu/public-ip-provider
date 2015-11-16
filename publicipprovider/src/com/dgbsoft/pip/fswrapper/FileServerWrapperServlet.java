@@ -73,7 +73,11 @@ public class FileServerWrapperServlet extends HttpServlet {
 					while (st.hasMoreTokens()) {
 						String line = st.nextToken();
 						String name = line;
-						resp.getWriter().println("<li><a href=\"ftp://" + data.getIp() + "/" + line + "\">" + name + "</a></li>\n");
+						if (req.getSession().getAttribute("password") != null) {
+							resp.getWriter().println("<li><a href=\"ftp://invitado:" + req.getSession().getAttribute("password") + "@" + data.getIp() + "/" + line + "\">" + name + "</a></li>\n");
+						} else {
+							resp.getWriter().println("<li><a href=\"ftp://" + data.getIp() + "/" + line + "\">" + name + "</a></li>\n");
+						}
 					}
 					resp.getWriter().println("</ol>");
 					resp.getWriter().println("</body></html>");

@@ -40,10 +40,12 @@ public class InitialServlet extends HttpServlet {
 			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=tp\">Get Temperature</a></li>");
 			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=sda\">Stop FileServer</a></li>");
 			resp.getWriter().append("</ul>");
+			/*
 			resp.getWriter().append("<dt><b>Film</b></dt>");
 			resp.getWriter().append("<ul>");
 			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=fl\">See Film List</a></li>");
 			resp.getWriter().append("</ul>");
+			*/
 			resp.getWriter().append("</body></html>");
 		} else if (req.getSession().getAttribute("login").equals("user")) {
 			resp.getWriter().append("<html><body>");

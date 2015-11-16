@@ -81,7 +81,19 @@ public class UserCheck {
         		logger.info("logged user = " + user);
         		String type = allowedUsers.getProperty(user);
         		req.getSession().setAttribute("login", type);
-        		return true;
+        		String pass = req.getParameter("password");
+            	if (!allowedUsers.containsKey(user + ".pwd")) {
+    				logger.severe("no passwd set for this user");
+            		return false;
+            	} else {
+            		if (allowedUsers.getProperty(user + ".pwd", "").equals(pass)) {
+                		req.getSession().setAttribute("password", pass);
+                		return true;
+            		} else {
+        				logger.severe("passwd does not match for user " + user);
+                		return false;
+            		}
+            	}
         	}
         }
 	}
