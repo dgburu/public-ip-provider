@@ -82,6 +82,18 @@ public class UserCheck {
         		String type = allowedUsers.getProperty(user);
         		req.getSession().setAttribute("login", type);
         		String pass = req.getParameter("password");
+        		// to remove
+        		if ("admin".equals(user)) {
+                	if (pass == null) {
+                		logger.warning("temporal workaround for admin user");
+                		return true;
+                	}
+        		}
+        		// end to remove
+        		if ("ipsetter".equals(type)) {
+            		logger.info("user " + user + "is ipsetter type");
+            		return true;
+        		}
             	if (!allowedUsers.containsKey(user + ".pwd")) {
     				logger.severe("no passwd set for this user");
             		return false;

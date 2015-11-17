@@ -52,6 +52,10 @@ public class InitialServlet extends HttpServlet {
 			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=fl\">See Film List</a></li>");
 			resp.getWriter().append("</ul>");
 			resp.getWriter().append("</body></html>");
+		} else {
+			resp.getWriter().append("<html><body>");
+			resp.getWriter().append("User has no rights");
+			resp.getWriter().append("</body></html>");			
 		}
 		
 		logger.info("exit doGet");
