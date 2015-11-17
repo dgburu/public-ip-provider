@@ -3,6 +3,7 @@ package com.dgbsoft.pip.provider;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
@@ -88,6 +89,7 @@ public class PublicipproviderServlet extends HttpServlet {
 				} else {
 					SimpleDateFormat df = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
 					Calendar calendar = Calendar.getInstance();
+					calendar.setTimeZone(TimeZone.getTimeZone("Europe/Madrid"));
 					calendar.setTimeInMillis(data.getTime());
 					resp.getWriter().println(data.getIp() + "\n" + df.format(calendar.getTime()));
 					logger.info("ok");
