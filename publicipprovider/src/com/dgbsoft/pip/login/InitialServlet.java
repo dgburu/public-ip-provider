@@ -28,7 +28,6 @@ public class InitialServlet extends HttpServlet {
 			resp.getWriter().append("<dt><b>IP</b></dt>");
 			resp.getWriter().append("<ul>");
 			resp.getWriter().append("<li type=\"disc\"><a href=\"/publicipprovider?op=get\">Get Public IP</a></li>");
-			resp.getWriter().append("<li type=\"disc\"><a href=\"/publicipprovider?op=set\">Set public IP</a></li>");
 			resp.getWriter().append("</ul>");
 			resp.getWriter().append("<dt><b>Download</b></dt>");
 			resp.getWriter().append("<ul>");
