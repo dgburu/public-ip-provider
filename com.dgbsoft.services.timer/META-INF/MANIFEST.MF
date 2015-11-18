@@ -6,5 +6,5 @@ Bundle-Version: 1.0.0
 Bundle-Vendor: DGBSOFT
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Require-Bundle: com.dgbsoft.core;bundle-version="1.0.0"
+Require-Bundle: com.dgbsoft.core
 Service-Component: OSGI-INF/timerComponent.xml

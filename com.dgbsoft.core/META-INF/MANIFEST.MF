@@ -6,5 +6,5 @@ Bundle-Version: 1.0.0
 Bundle-Vendor: DGBSOFT
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: com.dgbsoft.core.services
-Require-Bundle: org.eclipse.osgi;bundle-version="3.10.2"
+Require-Bundle: org.eclipse.osgi;visibility:=reexport
 Bundle-ActivationPolicy: lazy

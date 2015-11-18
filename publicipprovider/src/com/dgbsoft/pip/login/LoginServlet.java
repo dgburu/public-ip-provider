@@ -19,8 +19,7 @@ public class LoginServlet extends HttpServlet {
 
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		logger.info("doPost");
-		
-		if (UserCheck.getInstance().checkUser(req, getServletContext())) {
+		if ((req.getParameter("password") != null)  && UserCheck.getInstance().checkUser(req, getServletContext())) {
 			logger.info("usr type " + req.getSession().getAttribute("login"));
 			resp.sendRedirect("/initial");
 		} else {
