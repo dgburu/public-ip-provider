@@ -16,12 +16,31 @@ import java.util.TreeMap;
 import java.util.logging.Logger;
 
 import com.dgbsoft.core.services.IFileProviderService;
+import com.dgbsoft.core.services.ITimerListener;
+import com.dgbsoft.core.services.ITimerService;
+import com.dgbsoft.core.services.ServicesUtil;
 
 public class FileProviderService implements IFileProviderService {
 
 	private final static Logger LOG = Logger.getLogger(FileProviderService.class.getName());
 
 	private Map<String,Path> filesDB = new HashMap<String, Path>();
+
+	public FileProviderService() {
+		ITimerService timer = ServicesUtil.getService(ITimerService.class);
+		if (timer != null) {
+			timer.addTimerListener(new ITimerListener() {
+				@Override
+				public int getPeriod() {
+					return 18000000; //5 hours
+				}
+				@Override
+				public void timerEvent() {
+					getFileList(true);
+				}
+			});
+		}
+	}
 	
 	@Override
 	public InputStream getFile(String fileName) {
