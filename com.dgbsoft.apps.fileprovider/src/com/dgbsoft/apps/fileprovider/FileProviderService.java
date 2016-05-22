@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 import com.dgbsoft.core.services.IFileProviderService;
 import com.dgbsoft.core.services.ITimerListener;
 import com.dgbsoft.core.services.ITimerService;
+import com.dgbsoft.core.services.MovieInfo;
 import com.dgbsoft.core.services.ServicesUtil;
-import com.dgbsoft.core.services.misc.MovieInfo;
 
 public class FileProviderService implements IFileProviderService {
 

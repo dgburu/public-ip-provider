@@ -4,8 +4,6 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Set;
 
-import com.dgbsoft.core.services.misc.MovieInfo;
-
 public interface IFileProviderService {
 
 	public InputStream getFile(String fileName);

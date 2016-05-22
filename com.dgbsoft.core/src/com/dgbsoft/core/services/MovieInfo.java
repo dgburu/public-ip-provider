@@ -1,4 +1,4 @@
-package com.dgbsoft.core.services.misc;
+package com.dgbsoft.core.services;
 
 public class MovieInfo {
 
