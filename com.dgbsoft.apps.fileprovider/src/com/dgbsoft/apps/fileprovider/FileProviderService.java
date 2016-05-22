@@ -7,6 +7,12 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -19,6 +25,7 @@ import com.dgbsoft.core.services.IFileProviderService;
 import com.dgbsoft.core.services.ITimerListener;
 import com.dgbsoft.core.services.ITimerService;
 import com.dgbsoft.core.services.ServicesUtil;
+import com.dgbsoft.core.services.misc.MovieInfo;
 
 public class FileProviderService implements IFileProviderService {
 
@@ -32,11 +39,18 @@ public class FileProviderService implements IFileProviderService {
 			timer.addTimerListener(new ITimerListener() {
 				@Override
 				public int getPeriod() {
-					return 18000000; //5 hours
+					return 43200000; //5 hours
 				}
 				@Override
 				public void timerEvent() {
 					getFileList(true);
+				}
+				@Override
+				public Date getDate() {
+					LocalTime localTime = LocalTime.of(0, 0);
+					LocalDateTime localDate = localTime.atDate(LocalDate.now());
+					Instant instant = localDate.atZone(ZoneId.systemDefault()).toInstant();
+					return Date.from(instant);
 				}
 			});
 		}
@@ -106,6 +120,11 @@ public class FileProviderService implements IFileProviderService {
 	@Override
 	public Path getFilePath(String fileName) {
 		return filesDB.get(fileName);
+	}
+
+	@Override
+	public MovieInfo getFilmInfo(String fileName) {
+		return null;
 	}
 
 }

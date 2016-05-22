@@ -5,6 +5,6 @@ Bundle-SymbolicName: com.dgbsoft.apps.ipsetter
 Bundle-Version: 1.0.0
 Bundle-Activator: com.dgbsoft.apps.ipsetter.Activator
 Bundle-Vendor: DGBSOFT
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Require-Bundle: com.dgbsoft.core

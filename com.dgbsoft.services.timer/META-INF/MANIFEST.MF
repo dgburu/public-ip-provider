@@ -4,7 +4,7 @@ Bundle-Name: Timer Service
 Bundle-SymbolicName: com.dgbsoft.services.timer
 Bundle-Version: 1.0.0
 Bundle-Vendor: DGBSOFT
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Require-Bundle: com.dgbsoft.core
 Service-Component: OSGI-INF/timerComponent.xml

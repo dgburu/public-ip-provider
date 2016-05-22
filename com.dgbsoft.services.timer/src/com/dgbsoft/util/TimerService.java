@@ -22,12 +22,18 @@ public class TimerService implements ITimerService {
 			removeTimerListener(listener);
 		}
 		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
+		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
 				listener.timerEvent();
 			}
-		}, 0, listener.getPeriod());
+		};
+		if (listener.getDate() == null) {
+			timer.scheduleAtFixedRate(task, 0, listener.getPeriod());
+		} else {
+			timer.scheduleAtFixedRate(task, listener.getDate(), listener.getPeriod());
+		}
+		
 		timerMap.put(listener, timer);
 	}
 

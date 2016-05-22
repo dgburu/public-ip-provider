@@ -4,7 +4,7 @@ Bundle-Name: Tmdbapi
 Bundle-SymbolicName: ccom.dgbsoft.lib.tmdbapi
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: DGBSOFT
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .,
  lib/jackson-annotations-2.7.1.jar,
  lib/jackson-core-2.7.1.jar,

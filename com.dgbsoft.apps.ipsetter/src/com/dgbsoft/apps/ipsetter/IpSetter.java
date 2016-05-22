@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -53,6 +54,11 @@ public class IpSetter implements ITimerListener {
 			}
 		}
 		LOG.info("END at " + SimpleDateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
+	}
+
+	@Override
+	public Date getDate() {
+		return null;
 	}
 
 }

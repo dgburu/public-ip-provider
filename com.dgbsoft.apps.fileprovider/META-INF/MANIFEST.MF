@@ -5,7 +5,7 @@ Bundle-SymbolicName: com.dgbsoft.apps.fileprovider
 Bundle-Version: 1.0.0
 Bundle-Activator: com.dgbsoft.apps.fileprovider.Activator
 Bundle-Vendor: DGBSOFT
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Service-Component: OSGI-INF/fileProviderComponent.xml
 Require-Bundle: com.dgbsoft.core
