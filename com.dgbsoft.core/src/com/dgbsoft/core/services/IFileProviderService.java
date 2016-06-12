@@ -2,6 +2,7 @@ package com.dgbsoft.core.services;
 
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.Set;
 
 public interface IFileProviderService {
@@ -12,6 +13,6 @@ public interface IFileProviderService {
 	
 	public Path getFilePath(String fileName);
 	
-	public MovieInfo getFilmInfo(String fileName);
+	public Optional<MovieInfo> getFilmInfo(String fileName);
 
 }

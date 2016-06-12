@@ -8,4 +8,5 @@ Bundle-Vendor: DGBSOFT
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Service-Component: OSGI-INF/fileProviderComponent.xml
-Require-Bundle: com.dgbsoft.core
+Require-Bundle: com.dgbsoft.core,
+ com.dgbsoft.lib.tmdbapi

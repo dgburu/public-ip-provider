@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tmdbapi
-Bundle-SymbolicName: ccom.dgbsoft.lib.tmdbapi
+Bundle-SymbolicName: com.dgbsoft.lib.tmdbapi
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: DGBSOFT
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
@@ -16,3 +16,7 @@ Bundle-ClassPath: .,
  lib/httpcore-4.3.3.jar,
  lib/commons-codec-1.6.jar,
  lib/guava-19.0.jar
+Export-Package: com.dgbsoft.lib.tmdbapi,
+ com.dgbsoft.lib.tmdbapi.model,
+ com.dgbsoft.lib.tmdbapi.model.config,
+ com.dgbsoft.lib.tmdbapi.model.core

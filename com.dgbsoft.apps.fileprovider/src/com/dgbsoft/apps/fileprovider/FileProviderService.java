@@ -14,7 +14,9 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -26,6 +28,10 @@ import com.dgbsoft.core.services.ITimerListener;
 import com.dgbsoft.core.services.ITimerService;
 import com.dgbsoft.core.services.MovieInfo;
 import com.dgbsoft.core.services.ServicesUtil;
+import com.dgbsoft.lib.tmdbapi.TmdbApi;
+import com.dgbsoft.lib.tmdbapi.TmdbSearch;
+import com.dgbsoft.lib.tmdbapi.model.MovieDb;
+import com.dgbsoft.lib.tmdbapi.model.core.MovieResultsPage;
 
 public class FileProviderService implements IFileProviderService {
 
@@ -123,8 +129,61 @@ public class FileProviderService implements IFileProviderService {
 	}
 
 	@Override
-	public MovieInfo getFilmInfo(String fileName) {
-		return null;
+	public Optional<MovieInfo> getFilmInfo(String fileName) {
+		String temporal;
+		int year;		
+		int index1 = fileName.indexOf('(');
+		int index2 = fileName.indexOf(')');
+		
+		if ((index1 != -1) && (index2 != -1)) {
+			temporal = fileName.substring(0, index1);
+			String tmp = fileName.substring(index1 + 1, index2);
+			if (tmp.matches("\\d+")) {
+				year = Integer.valueOf(tmp);
+				LOG.finest(() -> "year = " + year);
+			} else {
+				year = 0;
+				LOG.finest(() -> "no year from string: " + tmp);				
+			}
+		} else {
+			year = 0;
+			temporal = fileName;
+		}
+		String title = temporal.replaceAll("\\.", " ");
+		LOG.fine(() -> "title = " + title);
+		
+		if ((title != null) && !title.isEmpty()) {
+			MovieInfo movieInfo = new MovieInfo();
+
+			TmdbApi api = new TmdbApi("d15b69539fe2d2967349ae44043be979");
+			TmdbSearch search = api.getSearch();
+			MovieResultsPage results = search.searchMovie(title, year, "es", true, 0);
+			List<MovieDb> movies = results.getResults();
+			if (!movies.isEmpty()) {
+			    MovieDb movie = movies.get(0);
+				LOG.fine(() -> "FINAL Titulo = " + movie.getTitle());
+				movieInfo.setTitle(movie.getTitle());
+				LOG.fine(() -> "FINAL Description = " + movie.getOverview());
+				movieInfo.setDescription(movie.getOverview());
+				String baseUrl = api.getConfiguration().getBaseUrl();
+				String size;
+				if (!api.getConfiguration().getPosterSizes().isEmpty()) {
+					int index = (api.getConfiguration().getPosterSizes().size() % 2) + 1;
+					size = api.getConfiguration().getPosterSizes().get(index);
+				} else {
+					size = "";
+				}
+				LOG.fine(() -> "FINAL Poster = " + baseUrl + size + movie.getPosterPath());
+				movieInfo.setImageAddress(baseUrl + size + movie.getPosterPath());
+			} else {
+				movieInfo.setTitle(title);
+				movieInfo.setDescription(title);
+				movieInfo.setImageAddress(null);
+			}
+
+			return Optional.of(movieInfo);
+		}
+		return Optional.empty();
 	}
 
 }

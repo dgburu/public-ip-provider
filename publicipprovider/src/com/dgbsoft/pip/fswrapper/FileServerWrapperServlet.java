@@ -154,6 +154,7 @@ public class FileServerWrapperServlet extends HttpServlet {
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
 			connection.connect();
+			connection.setReadTimeout(30000);
 			serverConnection = new ServerConnection(connection);
 			serverConnection.setPort(port);
 		} catch(Exception e) {
