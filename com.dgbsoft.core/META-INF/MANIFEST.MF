@@ -5,7 +5,8 @@ Bundle-SymbolicName: com.dgbsoft.core
 Bundle-Version: 1.0.0
 Bundle-Vendor: DGBSOFT
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: com.dgbsoft.core.services
+Export-Package: com.dgbsoft.core.services,
+ com.dgbsoft.core.services.misc
 Require-Bundle: org.eclipse.osgi;visibility:=reexport,
  com.dgbsoft.lib.tmdbapi
 Bundle-ActivationPolicy: lazy

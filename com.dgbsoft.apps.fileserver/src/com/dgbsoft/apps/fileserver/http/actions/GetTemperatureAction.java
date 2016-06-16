@@ -6,17 +6,12 @@ import java.io.OutputStreamWriter;
 import java.util.Date;
 import java.util.logging.Logger;
 
-import com.dgbsoft.apps.fileserver.http.IStreamProvider;
 import com.dgbsoft.core.services.IRpiGpioService;
 import com.dgbsoft.core.services.ServicesUtil;
 
 public class GetTemperatureAction extends BaseAction {
 
 	private final static Logger LOG = Logger.getLogger(GetTemperatureAction.class.getName());
-
-	public GetTemperatureAction(IStreamProvider streamProvider) {
-		super(streamProvider);
-	}
 
 	@Override
 	public boolean perform() {
@@ -25,10 +20,10 @@ public class GetTemperatureAction extends BaseAction {
 			float temp = service.getTemperature();
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
 			try {
-			    writer.append("HTTP/1.0 200 OK\r\n");
-		    	writer.append("Content-Type: text/plain\r\n");
-			    writer.append("Date: " + new Date() + "\r\n" + "Server: DgbSoft File server 1.0\r\n\r\n");
-			    writer.append("<html><body><h1>CPU Temperature = " + temp + "</h1></body></html>\r\n");
+				writer.append("HTTP/1.0 200 OK\r\n");
+				writer.append("Content-Type: text/plain\r\n");
+				writer.append("Date: " + new Date() + "\r\n" + "Server: DgbSoft File server 1.0\r\n\r\n");
+				writer.append("<html><body><h1>CPU Temperature = " + temp + "</h1></body></html>\r\n");
 				writer.flush();
 			} catch (IOException e) {
 				LOG.severe("Cannot get cpu temp, msg = " + e.getMessage());
@@ -42,6 +37,11 @@ public class GetTemperatureAction extends BaseAction {
 	@Override
 	public void stop() {
 		// nothing to do
+	}
+
+	@Override
+	public String getActionId() {
+		return "GETTEMPERATURE";
 	}
 
 }

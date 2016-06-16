@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.dgbsoft.core.services.IFileServerAction;
+
 public class FileServerProcessor implements Runnable {
 
 	private final static Logger LOG = Logger.getLogger(FileServerProcessor.class.getName());
@@ -16,7 +18,7 @@ public class FileServerProcessor implements Runnable {
 	private boolean stopProcess = false;
 	private InputStream inputStream = null;
 	private OutputStream outputStream = null;
-	private IAction currentAction = null;
+	private IFileServerAction currentAction = null;
 	
 	@Override
 	public void run() {

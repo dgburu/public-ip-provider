@@ -6,12 +6,13 @@ import java.net.InetAddress;
 import java.util.logging.Logger;
 
 import com.dgbsoft.apps.fileserver.http.HttpProtocol;
+import com.dgbsoft.core.services.IFileServerAction;
 
 public abstract class Protocol {
 
 	private final static Logger LOG = Logger.getLogger(Protocol.class.getName());
 
-	public abstract IAction getAction();
+	public abstract IFileServerAction getAction();
 
 	public static Protocol getProtocol(InetAddress inetAddress, InputStream inputStream, OutputStream outputStream) {
 		LOG.finest("Getting protocol");
