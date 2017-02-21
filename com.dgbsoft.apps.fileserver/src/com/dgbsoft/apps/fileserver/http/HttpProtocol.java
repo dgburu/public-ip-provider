@@ -36,10 +36,11 @@ public class HttpProtocol extends Protocol implements IStreamProvider {
 			LOG.fine(() -> "Http request = " + line);
 			if (line != null) {
 				List<IFileServerAction> services = ServicesUtil.getServices(IFileServerAction.class);
-				Optional<IFileServerAction> service = services.stream().filter(s -> line.equals(s.getActionId()))
+				Optional<IFileServerAction> service = services.stream().filter(s -> line.contains(s.getActionId()))
 						.findFirst();
 				if (service.isPresent()) {
 					LOG.fine(() -> "Action=" + service.get().getActionId());
+					service.get().setStreamProvider(this);
 					return service.get();
 				} else {
 					LOG.severe("Bad request");

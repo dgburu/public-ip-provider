@@ -8,5 +8,5 @@ Bundle-Vendor: DGBSOFT
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Require-Bundle: com.dgbsoft.core
-Service-Component: OSGI-INF/fileServerComponent.xml,OSGI-INF/getFileListActionComponent.xml,OSGI-INF/disableFanAction.xml,OSGI-INF/enableFanAction.xml,OSGI-INF/getTemperatureAction.xml,OSGI-INF/startMuleAction.xml,OSGI-INF/stopMuleAction.xml,OSGI-INF/updateFileListAction.xml,
+Service-Component: OSGI-INF/fileServerComponent.xml,OSGI-INF/getFileListAction.xml,OSGI-INF/disableFanAction.xml,OSGI-INF/enableFanAction.xml,OSGI-INF/getTemperatureAction.xml,OSGI-INF/startMuleAction.xml,OSGI-INF/stopMuleAction.xml,OSGI-INF/updateFileListAction.xml,
  OSGI-INF/shutdownAction.xml
