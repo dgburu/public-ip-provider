@@ -25,6 +25,7 @@ public class ServerConnection {
 	private PrintWriter writer = null;
 	private BufferedReader reader = null;
 	private int port = 15551;
+	private int contentLength = 0;
 
 	public ServerConnection(URLConnection con) {
 		this.con = con;
@@ -83,18 +84,23 @@ public class ServerConnection {
 	}
 
 	public String read() {
-		String message = "";
+		StringBuffer message = new StringBuffer();
 		if (reader != null) {
 			try {
 				String temp = null;
-				while ((temp = reader.readLine()) != null) {
-					message += temp;
+				int readed = 0;
+				while (readed != contentLength) {
+					temp = reader.readLine();
+					if (temp != null) {
+						message.append(temp);
+						readed = message.length();
+					}
 				}
 			} catch (IOException e) {
 				logger.severe("error reading inputstream " + e.getMessage());
 			}
 		}
-		return message;
+		return message.toString();
 	}
 
 	public void initialize() {
@@ -113,6 +119,7 @@ public class ServerConnection {
 				logger.severe("error getting inputstream " + e.getMessage());
 				FileServerWrapperServlet.logStackTrace(e);
 			}
+			contentLength = con.getContentLength();
 		} else {
 			logger.severe("connection is null");
 		}

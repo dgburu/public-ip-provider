@@ -122,6 +122,26 @@ public class FileServerWrapperServlet extends HttpServlet {
 			String message = connection.read();
 			connection.close();
 			resp.getWriter().append(message);
+		} else if (operation.equals("ag")) {
+			EntityManager em = DataStoreFactoryService.get().createEntityManager();
+			try {
+				ServerIPData data = em.find(ServerIPData.class, ServerIPData.KEY_IP_DATA);
+				if (data == null) {
+					resp.getWriter().println("NOK");
+					logger.info("nok");
+					logger.info("exit doGet");
+					return;
+				} else {
+					logger.info("forwarding to amule");
+					RequestDispatcher rs = req.getRequestDispatcher("http://" + data.getIp() + ":4711");
+					rs.forward(req, resp);
+				}
+			} catch (Exception e) {
+				logger.warning(e.toString());
+				resp.getWriter().println("NOK");
+			} finally {
+				em.close();
+			}
 		} else if (operation.equals("tp")) {
 			ServerConnection connection = ServerConnection.connectToServer("GETTEMPERATURE", getServletContext());
 			String message = connection.read();

@@ -28,6 +28,7 @@ public class GetFileListAction extends BaseAction {
 				writer.append("HTTP/1.0 200 OK\r\n");
 				writer.append("Content-Type: text/plain\r\n");
 				writer.append("Date: " + new Date() + "\r\n" + "Server: DgbSoft File server 1.0\r\n\r\n");
+				writer.append("Content-Length: " + message.length());
 				writer.flush();
 				writer.append(message);
 				LOG.finest(message.toString());

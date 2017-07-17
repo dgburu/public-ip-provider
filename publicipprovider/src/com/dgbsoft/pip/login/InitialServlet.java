@@ -17,7 +17,7 @@ public class InitialServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		logger.info("doGet");
-		
+
 		if (req.getSession().getAttribute("login") == null) {
 			logger.info("not logged");
 			RequestDispatcher rs = req.getRequestDispatcher("Login");
@@ -33,18 +33,13 @@ public class InitialServlet extends HttpServlet {
 			resp.getWriter().append("<ul>");
 			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=as\">Start Downloads</a></li>");
 			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=ap\">Stop Downloads</a></li>");
+			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=ag\">Goto Downloads</a></li>");
 			resp.getWriter().append("</ul>");
 			resp.getWriter().append("<dt><b>System</b></dt>");
 			resp.getWriter().append("<ul>");
 			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=tp\">Get Temperature</a></li>");
 			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=sda\">Stop FileServer</a></li>");
 			resp.getWriter().append("</ul>");
-			/*
-			resp.getWriter().append("<dt><b>Film</b></dt>");
-			resp.getWriter().append("<ul>");
-			resp.getWriter().append("<li type=\"disc\"><a href=\"/fileserverWrapper?op=fl\">See Film List</a></li>");
-			resp.getWriter().append("</ul>");
-			*/
 			resp.getWriter().append("</body></html>");
 		} else if (req.getSession().getAttribute("login").equals("user")) {
 			resp.getWriter().append("<html><body>");
@@ -55,10 +50,10 @@ public class InitialServlet extends HttpServlet {
 		} else {
 			resp.getWriter().append("<html><body>");
 			resp.getWriter().append("User has no rights");
-			resp.getWriter().append("</body></html>");			
+			resp.getWriter().append("</body></html>");
 		}
-		
+
 		logger.info("exit doGet");
 	}
-	
+
 }
